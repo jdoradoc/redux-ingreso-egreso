@@ -42,18 +42,18 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.dispatch(ui.isLoading);
+    this.store.dispatch(ui.isLoading());
     const { descripcion, monto } = this.ingresoEgresoForm.value;
     const ingresoEgreso = new IngresoEgreso(descripcion, monto, this.tipo);
     this.ingresoEgresoService.crearIngresoEgreso(ingresoEgreso)
       .then(() => {
         this.ingresoEgresoForm.reset();
         this.store.dispatch(ui.stopLoading());
-        Swal.fire('Registro creado', descripcion, 'success');
+        return Swal.fire('Registro creado', descripcion, 'success');
       })
       .catch(err => {
         this.store.dispatch(ui.stopLoading());
-        Swal.fire('Error', err.message, 'error');
+        return Swal.fire('Error', err.message, 'error');
       });
   }
 
