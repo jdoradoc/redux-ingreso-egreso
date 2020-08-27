@@ -4,7 +4,7 @@
           <div class="card-body">
             <h4 class="card-title">Agregar Ingreso / Gasto</h4>
             <p class="card-description">
-              Especifique el monto y el tipo
+              Especifique la cantidad y si es un ingreso o un gasto
             </p>
 
             <form [formGroup]="ingresoEgresoForm" (ngSubmit)="guardar()">
@@ -19,14 +19,14 @@
               </div>
 
               <div class="form-group">
-                  <label>Monto</label>
+                <label>Cantidad</label>
                   <input type="number"
                          class="form-control"
                          placeholder="Monto"
                          formControlName="monto"
                          name="monto">
                     <p>
-                      Debe de ser un monto positivo
+                      Debe de ser una cantidad positiva
                     </p>
                 </div>
 
@@ -59,16 +59,6 @@
                 <i class="fa fa-spin fa-sync"></i>
                 Guardando...
               </button>
-
-
-
-              <!--
-                <button disabled class="btn btn-success mr-2">
-                  <i class="fa fa-spin fa-sync"></i>
-                  Espere por favor...
-                </button>
-              -->
-
               <button type="reset" class="btn btn-light">Cancelar</button>
 
             </form>
