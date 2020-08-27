@@ -33,16 +33,16 @@ export class AuthService {
     this.auth.authState.subscribe( fuser => {
       if ( fuser ) {
         // existe
-        this.userSubscription = this.firestore.doc(`${ fuser.uid }/usuario`).valueChanges()
-          .subscribe( (firestoreUser: any) => {
-            const user = Usuario.fromFirebase( firestoreUser );
+        this.userSubscription = this.firestore.doc(`${fuser.uid}/usuario`).valueChanges()
+          .subscribe((firestoreUser: any) => {
+            const user = Usuario.fromFirebase(firestoreUser);
             this._user = user;
-            this.store.dispatch( authActions.setUser({ user }) );
-          })
+            this.store.dispatch(authActions.setUser({user}));
+          });
 
       } else {
         // no existe
-        this.userSubscription.unsubscribe();
+        this.userSubscription?.unsubscribe();
         this._user = null;
         this.store.dispatch( authActions.unSetUser() );
       }

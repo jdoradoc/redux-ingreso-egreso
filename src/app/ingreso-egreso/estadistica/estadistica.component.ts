@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AppState } from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { IngresoEgreso } from '../../models/ingreso-egreso.model';
 import { Label, MultiDataSet } from 'ng2-charts';
+import { AppStateIngresoEgreso } from '../ingreso-egreso.reducers';
 
 @Component({
   selector: 'app-estadistica',
@@ -20,7 +20,7 @@ export class EstadisticaComponent implements OnInit, OnDestroy {
   chartLabels: Label[] = ['Ingresos', 'Gastos'];
   chartData: MultiDataSet = [[]];
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppStateIngresoEgreso>) {
   }
 
   ngOnInit() {

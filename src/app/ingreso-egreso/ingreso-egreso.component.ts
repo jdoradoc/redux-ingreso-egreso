@@ -28,9 +28,9 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
     this.loadingSubscription = this.store.select('ui').subscribe(({isLoading}) => this.cargando = isLoading);
 
     this.ingresoEgresoForm = this.fb.group({
-      descripcion: [ '' , Validators.required],
+      descripcion: ['', Validators.required],
       monto: ['', Validators.required]
-    })
+    });
   }
 
   ngOnDestroy() {

@@ -15659,6 +15659,7 @@ input:focus {
   display: -webkit-flex;
   display: flex;
   margin-bottom: 30px;
+  align-items: center;
 }
 
 .sidebar .nav .nav-item.nav-profile .nav-link .user-wrapper .profile-image {
