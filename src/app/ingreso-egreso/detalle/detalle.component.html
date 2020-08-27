@@ -6,21 +6,29 @@
 
             <table class="table">
               <thead>
-                <tr>
-                  <th>Descripción</th>
-                  <th>Monto</th>
-                  <th>Tipo</th>
-                  <th></th>
-                </tr>
+              <tr>
+                <th>Descripción</th>
+                <th>Monto</th>
+                <th>Tipo</th>
+                <th></th>
+              </tr>
               </thead>
 
-              <tbody>
-                <tr>
-                  <td>Descripción</td>
-                  <td>Monto</td>
-                  <td>Tipo</td>
-                  <td>acciones</td>
-                </tr>
+              <tbody *ngFor="let item of ingresosEgresos | ordenIngresosEgresos">
+              <tr>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.monto | currency:'EUR' }}</td>
+                <td [ngClass]="{ 'text-danger' : item.tipo === 'gasto',
+                                   'text-success' : item.tipo === 'ingreso'}">
+                  {{ item.tipo | titlecase }}
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="delete(item.uid)">
+                    <i class="fa fa-trash"></i>
+                    Borrar
+                  </button>
+                </td>
+              </tr>
               </tbody>
 
             </table>
@@ -30,4 +38,3 @@
         </div>
     </div>
 </div>
-  

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
-  cargando: boolean = false;
+  cargando = false;
   uiSubscription: Subscription;
 
 
@@ -35,10 +35,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.uiSubscription = this.store.select('ui')
-                              .subscribe( ui => {
-                                this.cargando = ui.isLoading;
-                                console.log('cargando subs');
-                              });
+      .subscribe(({isLoading}) => {
+        this.cargando = isLoading;
+      });
 
   }
 
@@ -64,18 +63,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.authService.loginUsuario( email, password )
       .then( credenciales => {
-        console.log(credenciales);
-        // Swal.close();
         this.store.dispatch( ui.stopLoading() );
-        this.router.navigate(['/']);
+        return this.router.navigate(['/']);
       })
       .catch( err => {
-        this.store.dispatch( ui.stopLoading() );
+        this.store.dispatch(ui.stopLoading());
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: err.message
-        })
+        });
       });
 
   }
