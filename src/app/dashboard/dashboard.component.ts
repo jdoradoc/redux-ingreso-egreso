@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(({user}) => {
         this.ingresosEgresosSubscription = this.ingresoEgresoService.initIngresosEgresosLista(user.uid)
           .subscribe(ingresosEgresos => {
-            this.store.dispatch(ingresosEgresosActions.setItems({items: ingresosEgresos}));
+            this.store.dispatch(ingresosEgresosActions.loadItems({items: ingresosEgresos}));
           });
       });
   }
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ingresosEgresosSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
-    this.store.dispatch(ingresosEgresosActions.unSetItems());
+    this.store.dispatch(ingresosEgresosActions.clearItems());
   }
 
 }

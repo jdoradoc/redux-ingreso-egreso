@@ -17,8 +17,8 @@ export const initialState: State = {
 
 const _ingresoEgresoReducer = createReducer(
   initialState,
-  on(actions.setItems, (state, {items}) => ( {...state, items: [...items]} )),
-  on(actions.unSetItems, state => ( {...state, items: []} )),
+  on(actions.loadItems, (state, {items}) => ( {...state, items: [...items]} )),
+  on(actions.clearItems, state => ( {...state, items: []} )),
 );
 
 export function ingresoEgresoReducer(state, action) {
