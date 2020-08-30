@@ -6,10 +6,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
-import * as authActions from '../auth/auth.actions';
+import * as authActions from '../auth/store/actions/auth.actions';
 
 import { map } from 'rxjs/operators';
-import { Usuario } from '../models/usuario.model';
+import { User } from '../models/user.model';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 export class AuthService {
 
   userSubscription: Subscription;
-  _user: Usuario;
+  _user: User;
 
   constructor( public auth: AngularFireAuth,
                private firestore: AngularFirestore,
@@ -29,13 +29,12 @@ export class AuthService {
   }
 
   initAuthListener() {
-
     this.auth.authState.subscribe( fuser => {
       if ( fuser ) {
         // existe
         this.userSubscription = this.firestore.doc(`${fuser.uid}/usuario`).valueChanges()
           .subscribe((firestoreUser: any) => {
-            const user = Usuario.fromFirebase(firestoreUser);
+            const user = User.fromFirebase(firestoreUser);
             this._user = user;
             this.store.dispatch(authActions.setUser({user}));
           });
@@ -44,7 +43,7 @@ export class AuthService {
         // no existe
         this.userSubscription?.unsubscribe();
         this._user = null;
-        this.store.dispatch( authActions.unSetUser() );
+        this.store.dispatch(authActions.unSetUser());
       }
 
     });
@@ -52,23 +51,16 @@ export class AuthService {
   }
 
 
-
-  crearUsuario( nombre:string, email: string, password: string ) {
-
-    // console.log({ nombre, email, password });
-    return this.auth.createUserWithEmailAndPassword( email, password )
-            .then( ({ user }) => {
-
-              const newUser = new Usuario( user.uid, nombre, user.email );
-
-              return this.firestore.doc(`${ user.uid }/usuario`).set({ ...newUser });
-
-            });
-
+  createUser(name: string, email: string, password: string) {
+    return this.auth.createUserWithEmailAndPassword(email, password)
+      .then(({user}) => {
+        const newUser = new User(user.uid, name, user.email);
+        return this.firestore.doc(`${user.uid}/usuario`).set({...newUser});
+      });
   }
 
-  loginUsuario( email:string, password:string) {
-    return this.auth.signInWithEmailAndPassword( email, password );
+  loginUser(email: string, password: string) {
+    return this.auth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {
@@ -77,7 +69,7 @@ export class AuthService {
 
   isAuth() {
     return this.auth.authState.pipe(
-      map( fbUser => fbUser != null )
+      map(fbUser => fbUser != null)
     );
   }
 

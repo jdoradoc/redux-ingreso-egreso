@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import { setUser, unSetUser } from './auth.actions';
-import { Usuario } from '../models/usuario.model';
+import { setUser, unSetUser } from '../actions';
+import { User } from '../../../models/user.model';
 
 export interface State {
-  user: Usuario;
+  user: User;
 }
 
 export const initialState: State = {
@@ -11,10 +11,8 @@ export const initialState: State = {
 };
 
 const _authReducer = createReducer(initialState,
-
     on( setUser, (state, { user }) => ({ ...state, user: { ...user }  })),
     on( unSetUser, state => ({ ...state, user: null  })),
-
 );
 
 export function authReducer(state, action) {

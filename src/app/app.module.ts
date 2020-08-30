@@ -18,6 +18,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { EffectsModule } from '@ngrx/effects';
+import { EffectsArray } from './ingreso-egreso/store/effects';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -25,11 +28,13 @@ import { AuthModule } from './auth/auth.module';
     AppComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
     StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot(EffectsArray),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

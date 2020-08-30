@@ -1,23 +1,23 @@
-<div class="row">
-    <div class="col-6">
-        <div class="card card-statistics">
-          <div class="card-body">
+<div *ngIf="!loading && !error" class="row">
+  <div class="col-6">
+    <div class="card card-statistics">
+      <div class="card-body">
 
-            <div class="clearfix">
-              <div class="float-left">
-                <i class="fa fa-money-bill-alt text-success icon-lg"></i>
-              </div>
-              <div class="float-right">
-                <p class="mb-0 text-right">Ingresos</p>
-                <div class="fluid-container">
-                  <h3 class="font-weight-medium text-right mb-0">{{ totalIngresos | currency:'EUR' }}</h3>
-                </div>
-              </div>
-            </div>
-            <p class="text-muted mt-3 mb-0">
-              <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> {{ ingresos }} items
-            </p>
+        <div class="clearfix">
+          <div class="float-left">
+            <i class="fa fa-money-bill-alt text-success icon-lg"></i>
           </div>
+          <div class="float-right">
+            <p class="mb-0 text-right">Ingresos</p>
+            <div class="fluid-container">
+              <h3 class="font-weight-medium text-right mb-0">{{ totalIngresos | currency:'EUR' }}</h3>
+            </div>
+          </div>
+        </div>
+        <p class="text-muted mt-3 mb-0">
+          <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> {{ ingresos }} items
+        </p>
+      </div>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<div class="row m-5">
+<div *ngIf="!loading && !error" class="row m-5">
   <div class="col-12">
     <div class="card card-statistics">
       <div class="card-body">
@@ -85,4 +85,18 @@
     </div>
   </div>
 
+</div>
+
+<div class="alert alert-info text-center" role="alert" *ngIf="loading">
+  <h4 class="alert-heading">Cargando...</h4>
+  <p>
+    <i class="fa fa-sync fa-spin fa-2x"></i>
+  </p>
+</div>
+
+<div class="alert alert-danger text-center" role="alert" *ngIf="error">
+  <h4 class="alert-heading">Error.</h4>
+  <pre>
+    {{ error | json }}
+  </pre>
 </div>

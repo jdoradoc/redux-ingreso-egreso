@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { IngresoEgreso } from '../../models/ingreso-egreso.model';
 import { Label, MultiDataSet } from 'ng2-charts';
-import { AppStateIngresoEgreso } from '../ingreso-egreso.reducers';
+import { AppStateIngresoEgreso } from '../store/reducers/ingreso-egreso.reducers';
 
 @Component({
   selector: 'app-estadistica',
@@ -19,14 +19,18 @@ export class EstadisticaComponent implements OnInit, OnDestroy {
   private uiSubscription: Subscription;
   chartLabels: Label[] = ['Ingresos', 'Gastos'];
   chartData: MultiDataSet = [[]];
+  loading = false;
+  error = false;
 
   constructor(private store: Store<AppStateIngresoEgreso>) {
   }
 
   ngOnInit() {
     this.uiSubscription = this.store.select('ingresosEgresos')
-      .subscribe(({items}) => {
+      .subscribe(({items, loading, error}) => {
         this.generarEstadisticas(items);
+        this.loading = loading;
+        this.error = error;
       });
   }
 

@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppState } from '../app.reducer';
 import { Store } from '@ngrx/store';
-import * as ingresosEgresosActions from '../ingreso-egreso/ingreso-egreso.actions';
+import * as actions from '../ingreso-egreso/store/actions';
 
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-
-import { IngresoEgresoService } from '../services/ingreso-egreso.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,10 +14,8 @@ import { IngresoEgresoService } from '../services/ingreso-egreso.service';
 export class DashboardComponent implements OnInit, OnDestroy {
 
   userSubscription: Subscription;
-  ingresosEgresosSubscription: Subscription;
 
-  constructor(private store: Store<AppState>,
-              private ingresoEgresoService: IngresoEgresoService) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
@@ -28,17 +24,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filter(auth => auth.user != null)
       )
       .subscribe(({user}) => {
-        this.ingresosEgresosSubscription = this.ingresoEgresoService.initIngresosEgresosLista(user.uid)
-          .subscribe(ingresosEgresos => {
-            this.store.dispatch(ingresosEgresosActions.loadItems({items: ingresosEgresos}));
-          });
+        this.store.dispatch(actions.loadItems({id: user.uid}));
       });
   }
 
   ngOnDestroy(): void {
-    this.ingresosEgresosSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
-    this.store.dispatch(ingresosEgresosActions.clearItems());
+    this.store.dispatch(actions.clearItems());
   }
 
 }
